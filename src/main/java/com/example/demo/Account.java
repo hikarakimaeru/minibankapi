@@ -10,14 +10,17 @@ public class Account {
     @Id
     @Column(name = "account_number")
     private String accountNumber;
-    @Column(name = "user_id")
-    private int userId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @Column(name = "balance", precision = 18, scale = 2)
     private BigDecimal balance = BigDecimal.ZERO;
 
-    Account(int userId, String accountNumber){
+    Account(User user, String accountNumber){
         this.accountNumber = accountNumber;
-        this.userId = userId;
+        this.user = user;
     }
 
     protected Account() {

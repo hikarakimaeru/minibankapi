@@ -17,8 +17,11 @@ public class DemoApplication {
 	@Bean
 	CommandLineRunner testBank(BankService bankService){
 		return args ->{
-			Account account = new Account(0, "LT1235");
-			Account account2 = new Account(1, "UA1466");
+			User user = new User();
+			User user2 = new User();
+
+			Account account = new Account(user, "LT1235");
+			Account account2 = new Account(user2, "UA1466");
 
 			account.setBalance(BigDecimal.ONE);
 			account2.setBalance(BigDecimal.TWO);
