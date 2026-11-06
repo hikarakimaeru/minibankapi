@@ -16,6 +16,10 @@ public class BankService {
 
     @Transactional
     public void transfer(String accountNumber, String accountNumber2, BigDecimal num){
+        if(num == null){
+            System.out.println("Number can't be null");
+            return;
+        }
         if(accountNumber.equals(accountNumber2)){
             System.out.println("Account numbers are equal!");
             return;
@@ -32,16 +36,8 @@ public class BankService {
             return;
         }
 
-        if(num.compareTo(BigDecimal.ZERO) < 0){
-            System.out.println("Can't transfer less than one!");
-            return;
-        }else if(num.compareTo(BigDecimal.ZERO) == 0){
-            System.out.println("Can't transfer zero money!");
-            return;
-        }
-
-        if(account1.getBalance().compareTo(num) < 0){
-            System.out.println("Balance is too small!");
+        if(num.compareTo(BigDecimal.ZERO) <= 0 || account1.getBalance().compareTo(num) < 0){
+            System.out.println("Error");
             return;
         }
 
@@ -49,6 +45,57 @@ public class BankService {
         account2.setBalance(account2.getBalance().add(num));
 
         System.out.println("Transfer successful!");
+    }
+
+    @Transactional
+    public void deposit(String accountNumber, BigDecimal num){
+        if(num == null){
+            System.out.println("Number can't be null");
+            return;
+        }
+
+        Account account = findByAccountNumber(accountNumber);
+        if(num.compareTo(BigDecimal.ZERO) <= 0){
+            System.out.println("Error");
+            return;
+        }
+
+        if(account == null){
+            System.out.println("Account is not exist");
+            return;
+        }
+
+        account.setBalance(account.getBalance().add(num));
+
+        System.out.println("Deposit successful!");
+    }
+
+    @Transactional
+    public void withdraw(String accountNumber, BigDecimal num){
+        if(num == null){
+            System.out.println("Number can't be null");
+            return;
+        }
+
+        Account account = findByAccountNumber(accountNumber);
+        if(num.compareTo(BigDecimal.ZERO) <= 0){
+            System.out.println("Error");
+            return;
+        }
+
+        if(account == null){
+            System.out.println("Account is not exist");
+            return;
+        }
+
+        if(account.getBalance().compareTo(num) < 0){
+            System.out.println("Balance is too small!");
+            return;
+        }
+
+        account.setBalance(account.getBalance().subtract(num));
+
+        System.out.println("Withdraw successful!");
     }
 
     private Account findByAccountNumber(String accountNumber){

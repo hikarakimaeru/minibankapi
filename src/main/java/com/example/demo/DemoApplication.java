@@ -36,6 +36,15 @@ public class DemoApplication {
 
 			System.out.println("Account 1 balance after: " + bankService.getAccount("LT1235").getBalance());
 			System.out.println("Account 2 balance after: " + bankService.getAccount("UA1466").getBalance());
+
+			bankService.deposit("LT1235", BigDecimal.valueOf(15));
+
+			System.out.println("Account 1 balance after deposit: " + bankService.getAccount("LT1235").getBalance());
+
+			bankService.withdraw("LT1235", BigDecimal.valueOf(15));
+
+			System.out.println("Account 1 balance after withdraw: " + bankService.getAccount("LT1235").getBalance());
+
 		};
     }
 }
