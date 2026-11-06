@@ -1,13 +1,21 @@
 package com.example.demo;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
+
+@Service
 public class BankService {
-    private List<Account> accList = new ArrayList<>();
+    private final AccountRepository accountRepository;
 
-    public void Transfer(String accountNumber, String accountNumber2, BigDecimal num){
+    public BankService(AccountRepository accountRepository){
+        this.accountRepository = accountRepository;
+    }
+
+    @Transactional
+    public void transfer(String accountNumber, String accountNumber2, BigDecimal num){
         if(accountNumber.equals(accountNumber2)){
             System.out.println("Account numbers are equal!");
             return;
@@ -44,16 +52,14 @@ public class BankService {
     }
 
     private Account findByAccountNumber(String accountNumber){
-        for (Account value : accList) {
-            if (value.getAccountNumber().equals(accountNumber)) {
-                return value;
-            }
-        }
-
-        return null;
+        return accountRepository.findById(accountNumber).orElse(null);
     }
 
     public void addAccount(Account account){
-        accList.add(account);
+        accountRepository.save(account);
+    }
+
+    public Account getAccount(String accountNumber){
+        return accountRepository.findById(accountNumber).orElseThrow();
     }
 }
