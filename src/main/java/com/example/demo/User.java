@@ -16,17 +16,17 @@ public class User {
     private String name;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
     @OneToMany(mappedBy = "user")
     private List<Account> accList = new ArrayList<>();
 
-    public User(String login, String password, String name, int id){
+    public User(String login, String password, String name){
         this.login = login;
         this.password = password;
         this.name = name;
-        this.id = id;
     }
 
     protected User(){
