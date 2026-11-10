@@ -1,5 +1,5 @@
 package com.example.demo;
 
-public record CreateAccountRequest(Long userId) {
+public record CreateAccountRequest(long userId) {
 
 }

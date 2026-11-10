@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,27 +19,29 @@ public class UserController {
     }
 
     @PostMapping("/createUser")
-    public void createUser(@RequestBody CreateUserRequest request){
+    public ResponseEntity<Void> createUser(@RequestBody CreateUserRequest request){
         String login = request.login();
         String password = request.password();
         String name = request.name();
 
         if(login == null || password == null || name == null){
-            return;
+            return ResponseEntity.badRequest().build();
         }
 
         if(isIncorrectInput(login) || isIncorrectInput(password) || isIncorrectInput(name)){
-            return;
+            return ResponseEntity.badRequest().build();
         }
 
         if(login.length() > 16 || password.length() > 16 || name.length() >= 255){
-            return;
+            return ResponseEntity.badRequest().build();
         }
 
         String hashedPassword = passwordService.hashPassword(password);
 
         User user = new User(login, hashedPassword, name);
         userRepository.save(user);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     public boolean isIncorrectInput(String string){

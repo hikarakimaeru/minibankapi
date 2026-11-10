@@ -15,9 +15,9 @@ public class AccountController {
 
     @PostMapping("/createAccount")
     public ResponseEntity<Void> createAccount(@RequestBody CreateAccountRequest accountRequest){
-        Long userId = accountRequest.userId();
+        long userId = accountRequest.userId();
 
-        if(accountRequest.userId() == null || userId <= 0){
+        if(userId <= 0){
             return ResponseEntity.badRequest().build();
         }
 

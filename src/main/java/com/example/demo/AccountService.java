@@ -16,7 +16,7 @@ public class AccountService {
         this.userRepository = userRepository;
     }
 
-    public void createAccount(Long userId){
+    public void createAccount(long userId){
         User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(
                 HttpStatus.NOT_FOUND,
                 "User not found!"
