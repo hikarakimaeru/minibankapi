@@ -5,7 +5,12 @@ import java.math.BigDecimal;
 import com.example.demo.account.Account;
 import com.example.demo.account.AccountRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @Service
 public class BankService {
@@ -16,36 +21,32 @@ public class BankService {
     }
 
     @Transactional
-    public void transfer(String accountNumber, String accountNumber2, BigDecimal num){
-        if(num == null){
-            System.out.println("Number can't be null");
-            return;
-        }
-        if(accountNumber.equals(accountNumber2)){
-            System.out.println("Account numbers are equal!");
-            return;
+    public boolean transfer(String accountNumber, String accountNumber2, BigDecimal num){
+        if(num == null || accountNumber == null || accountNumber2 == null || accountNumber.isBlank() || accountNumber2.isBlank()){
+            return false;
         }
 
         Account account1 = findByAccountNumber(accountNumber);
         if(account1 == null){
-            System.out.println("Wrong first account number");
-            return;
+            return false;
         }
         Account account2 = findByAccountNumber(accountNumber2);
         if(account2 == null){
-            System.out.println("Wrong second account number");
-            return;
+            return false;
+        }
+
+        if(accountNumber.equals(accountNumber2)){
+            return false;
         }
 
         if(num.compareTo(BigDecimal.ZERO) <= 0 || account1.getBalance().compareTo(num) < 0){
-            System.out.println("Error");
-            return;
+            return false;
         }
 
         account1.setBalance(account1.getBalance().subtract(num));
         account2.setBalance(account2.getBalance().add(num));
 
-        System.out.println("Transfer successful!");
+        return true;
     }
 
     @Transactional

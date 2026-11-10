@@ -41,8 +41,7 @@ public class AccountController {
         List<AccountResponse> accountResponses = new ArrayList<>();
 
         for (Account currAcc : accounts) {
-            AccountResponse currAccountResponse = new AccountResponse(currAcc.getAccountNumber(), currAcc.getBalance());
-            accountResponses.add(currAccountResponse);
+            accountResponses.add(new AccountResponse(currAcc.getAccountNumber(), currAcc.getBalance()));
         }
 
         return accountResponses;
