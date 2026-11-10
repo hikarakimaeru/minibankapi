@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.account;
 
 
 import org.springframework.http.HttpStatus;

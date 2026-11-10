@@ -1,5 +1,6 @@
-package com.example.demo;
+package com.example.demo.user;
 
+import com.example.demo.account.Account;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

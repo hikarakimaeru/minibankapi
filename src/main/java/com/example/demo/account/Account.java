@@ -1,5 +1,6 @@
-package com.example.demo;
+package com.example.demo.account;
 
+import com.example.demo.user.User;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
