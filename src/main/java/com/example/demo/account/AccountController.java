@@ -12,14 +12,10 @@ import java.util.List;
 
 @RestController
 public class AccountController {
-    private final UserRepository userRepository;
-    private final AccountRepository accountRepository;
     AccountService accountService;
 
-    public AccountController(AccountService accountService, UserRepository userRepository, AccountRepository accountRepository){
+    public AccountController(AccountService accountService){
         this.accountService = accountService;
-        this.userRepository = userRepository;
-        this.accountRepository = accountRepository;
     }
 
     @PostMapping("/createAccount")
@@ -37,14 +33,7 @@ public class AccountController {
 
     @GetMapping("/user/{userId}/accounts")
     public List<AccountResponse> getAccounts(@PathVariable long userId){
-        List<Account> accounts = accountRepository.findByUser_Id(userId);
-        List<AccountResponse> accountResponses = new ArrayList<>();
-
-        for (Account currAcc : accounts) {
-            accountResponses.add(new AccountResponse(currAcc.getAccountNumber(), currAcc.getBalance()));
-        }
-
-        return accountResponses;
+        return accountService.findAllAccountsInfoByUserId(userId);
     }
 
 }

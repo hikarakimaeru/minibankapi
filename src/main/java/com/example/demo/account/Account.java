@@ -19,7 +19,7 @@ public class Account {
     @Column(name = "balance", precision = 18, scale = 2)
     private BigDecimal balance = BigDecimal.ZERO;
 
-    Account(User user, String accountNumber){
+    public Account(User user, String accountNumber){
         this.accountNumber = accountNumber;
         this.user = user;
     }
