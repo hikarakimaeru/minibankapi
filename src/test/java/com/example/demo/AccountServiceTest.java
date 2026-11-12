@@ -8,14 +8,14 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 class AccountServiceTest {
     AccountRepository accountRepository = mock(AccountRepository.class);
@@ -38,7 +38,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void shouldReturnFailureForNonExistingUser(){
+    void shouldNotCreateAccountWhenUserDoesNotExist(){
         long userId = 4;
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
@@ -47,4 +47,28 @@ class AccountServiceTest {
                 () -> accountService.createAccount(userId)
         );
     }
+
+    @Test
+    void shouldReturnSuccessForAccountCreating(){
+        long userId = 5;
+        when(userRepository.findById(userId)).thenReturn(Optional.ofNullable(user));
+
+        accountService.createAccount(userId);
+
+        verify(accountRepository).save(any(Account.class));
+    }
+
+    @Test
+    void shouldNotSaveAccountWhenUserNotExist(){
+        long userId = 4;
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(
+                ResponseStatusException.class,
+                () -> accountService.createAccount(userId)
+        );
+
+        verify(accountRepository, never()).save(any(Account.class));
+    }
+
 }
